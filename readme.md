@@ -20,7 +20,7 @@ This tutorial is written in French: **Feel free to contribute for a translated v
 > Vous pouvez retrouver l'exemple au lien suivant: https://getbootstrap.com/docs/4.1/examples/blog/
 
 ### 1. Déclaration du thème dans style.css
-> Documentation de style.css : https://developer.wordpress.org/themes/basics/main-stylesheet-style-css/
+> Documentation: [Main Stylesheet](https://developer.wordpress.org/themes/basics/main-stylesheet-style-css/)
 
 Le thème doit être déclaré dans le header de `style.css` :
 ```
@@ -41,6 +41,7 @@ Use it to make something cool, have fun, and share what you've learned with othe
 ```
 
 ### 2. Copie du thème et partials
+> Documentation : [Template Files](https://developer.wordpress.org/themes/basics/template-files/)
 Nous allons copier le thème depuis l'example Bootstrap et le découper en partials pour avoir une meilleure lisibilité fichiers par fichiers.
 
 C'est à vous de trouver la découpe la plus pratique possible, par exemple ici :
@@ -51,4 +52,81 @@ C'est à vous de trouver la découpe la plus pratique possible, par exemple ici 
 - footer.php    // Pied de page
 - main.php      // Contenu principal (articles)
 - sidebar.php   // Menu de droite (inclus dans main.php)
+```
+Lien vers le commit correspondant à la découpe à l'état actuel : [fd4aa78](https://github.com/tomsihap/wp_tomtheme/commit/fd4aa78415374527a754eb0085cf994d20e6d3a3)
+
+### 3. Importer le CSS, afficher le titre
+Rien ne doit être écrit en dur dans un thème ! Nous allons utiliser les fonctions natives de Wordpress nous permettant d'importer nos assets et d'afficher le titre du blog.
+
+#### Affichage du titre
+> Documentation: [Template Tags](https://developer.wordpress.org/themes/basics/template-tags/)
+
+On peut afficher le titre du blog dans le header et dans le titre de la page grâce à :
+
+```html
+<title>
+    <?php bloginfo('name'); ?>
+</title>
+...
+<div class="col-4 text-center">
+    <a class="blog-header-logo text-dark" href="#"><?php bloginfo('name'); ?></a>
+</div>
+```
+Par défaut, `bloginfo()` sans paramètres retournera la valeur de `bloginfo('name')`.
+
+
+#### Import du CSS
+> Documentation: [Including CSS & JavaScript](https://developer.wordpress.org/themes/basics/including-css-javascript/)
+Nous ne pouvons pas importer le CSS directement depuis le dossier du thème: il va falloir utiliser un *hook*, afin d'importer nos thèmes au moment opportun par Wordpress.
+
+Pour cela, nous allons créer un fichier `functions.php` à la racine du thème et le remplir ainsi : 
+
+```php
+
+/**
+ * Fonction qui empilera nos styles
+ */
+function tt_enqueue_styles() {
+    wp_enqueue_style( 'tt-main', get_template_directory_uri() . '/style.css');
+}
+
+/**
+ * Déclanchement de tt_enqueue_styles lors du hook "wp_enqueue_styles"
+ */
+add_action('wp_enqueue_scripts', 'tt_enqueue_styles');
+```
+> Pensez à préfixer (ici "tt" pour tomtheme) vos fonctions !
+
+Enfin, nous pouvons modifier style.css et insérer le contenu du style par défaut de l'example "Blog" (fichier complet à retrouver dans le code source de l'exemple !) :
+
+```css
+...
+
+.blog-header {
+    line-height: 1;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.blog-header-logo {
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 2.25rem;
+}
+...
+```
+
+Il faudra également indiquer à Wordpress où insérer les données de header grâce à la fonction `wp_head()` à mettre *à la fin de* header.php :
+```html
+<head>
+    ...
+    <?php wp_head(); ?>
+</head>
+```
+
+Enfin pour terminer avec les dépendances, n'oubliez pas de modifier `footer.php` afin d'enlever les liens relatifs et plutôt mettre des liens vers des CDN :
+```html
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.6/holder.min.js" integrity="sha256-yF/YjmNnXHBdym5nuQyBNU62sCUN9Hx5awMkApzhZR0=" crossorigin="anonymous"></script>
+    
 ```
