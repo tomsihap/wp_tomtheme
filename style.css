@@ -154,3 +154,9 @@ h6 {
 .blog-footer p:last-child {
     margin-bottom: 0;
 }
+
+
+.widget_archive > ul {
+    padding: 0;
+    list-style-type: none;
+}

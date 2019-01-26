@@ -29,7 +29,7 @@
           <a class="text-muted" href="#">Subscribe</a>
         </div>
         <div class="col-4 text-center">
-          <a class="blog-header-logo text-dark" href="#"><?php bloginfo('name'); ?></a>
+          <a class="blog-header-logo text-dark" href="<?php bloginfo('wpurl'); ?>"><?php bloginfo('name'); ?></a>
         </div>
         <div class="col-4 d-flex justify-content-end align-items-center">
           <a class="text-muted" href="#">
