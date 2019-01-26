@@ -1,3 +1,6 @@
+This repository is a tutorial on how to create a Wordpress theme from the Bootstrap example "Blog".
+This tutorial is written in French: **Feel free to contribute for a translated version !**
+
 # Créer un thème Worpress
 
 ## Création du dossier
