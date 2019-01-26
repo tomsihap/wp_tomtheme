@@ -1,4 +1,4 @@
-This repository is a tutorial on how to create a Wordpress theme from the Bootstrap example "Blog".
+This repository is a tutorial on how to create a Wordpress theme from the Bootstrap v4.1 example "Blog".
 This tutorial is written in French: **Feel free to contribute for a translated version !**
 
 # Créer un thème Worpress
@@ -38,4 +38,17 @@ Tags: one-column, two-columns, right-sidebar, flexible-header, accessibility-rea
 This theme, like WordPress, is licensed under the GPL.
 Use it to make something cool, have fun, and share what you've learned with others.
 */
+```
+
+### 2. Copie du thème et partials
+Nous allons copier le thème depuis l'example Bootstrap et le découper en partials pour avoir une meilleure lisibilité fichiers par fichiers.
+
+C'est à vous de trouver la découpe la plus pratique possible, par exemple ici :
+```
+- header.php    // En tête et top-menu
+- partials/featured-post.php    // Post en grand en haut
+- partials/highlight-posts.php  // Deux posts "featured"
+- footer.php    // Pied de page
+- main.php      // Contenu principal (articles)
+- sidebar.php   // Menu de droite (inclus dans main.php)
 ```
